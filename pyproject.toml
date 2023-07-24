@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "barcode-matrix"
+version = "0.1.0"
+description = "A graphical representation of fixed-length genetic barcodes."
+authors = ["mchu-1 <mchu1996@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "barcode_matrix"}]
+
+[tool.poetry.dependencies]
+python = "3.11"
+numpy = "^1.25.1"
+seaborn = "matplotlib"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
