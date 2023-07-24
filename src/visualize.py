@@ -4,13 +4,14 @@
 
 from matrix import *
 import seaborn as sns
+from scipy import stats
 from matplotlib import pyplot as plt
 
 def transform_matrix(A: np.array) -> np.array:
     """
     Apply a transformation element-wise to a matrix.
     """
-    A = np.array([10**x for x in A])
+    A = [1/(1-np.log(x)/np.sum(A)) for x in A]
 
     return A
 
@@ -32,7 +33,7 @@ def visualize_matrix(A: np.array, transform: bool = False):
 test_matrix = np.random.randint(0, 100, size = (1000, 1000))
 
 # Visualize and show matrix
-G = visualize_matrix(test_matrix)
+G = visualize_matrix(test_matrix, transform=True)
 plt.show()
 
 
