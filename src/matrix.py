@@ -107,4 +107,3 @@ def generate_matrix(input_f, config_f: str) -> np.array:
 
 
 
-
