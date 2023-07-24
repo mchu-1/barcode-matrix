@@ -10,7 +10,7 @@ def initiate_matrix(k: int) -> np.array:
     """
     Initiate matrix with zero entries.
     """
-    empty_matrix = np.zeros([k, k])
+    empty_matrix = np.zeros([2**k, 2**k])
 
     return empty_matrix
 
@@ -57,6 +57,15 @@ def get_indexes(barcode: str, base: np.array) -> list:
     return [x, y]
 
 
+def read_settings(config_f: str):
+    """
+    Generate settings dictionary from config YAML.
+    """
+    settings = yaml.safe_load(config_f)
+
+    return settings
+
+
 def generate_matrix(input_f, config_f: str) -> np.array:
     """
     Generate barcode matrix from input FASTQ and config YAML.
@@ -71,10 +80,10 @@ def generate_matrix(input_f, config_f: str) -> np.array:
     sequences = process.get_sequences_from_file(input_f)
 
     # Read settings from config file
-    settings = yaml.safe_load(config_f)
-    ref = settings.ref
-    k = settings.k
-    g11, g12, g21, g22 = settings.g11, settings.g12, settings.g21, settings.g22
+    settings = read_settings(config_f)
+    ref = settings["ref"]
+    k = settings["k"]
+    g11, g12, g21, g22 = settings["g11"], settings["g12"], settings["g21"], settings["g22"]
 
     # Generate barcode matrix
     A = initiate_matrix(k)
@@ -83,6 +92,8 @@ def generate_matrix(input_f, config_f: str) -> np.array:
         barcode = get_barcode(seq, ref, k)
         x, y = get_indexes(barcode, b)
         A[x, y] += 1
+
+    A = A.astype(int)
 
     return A
 

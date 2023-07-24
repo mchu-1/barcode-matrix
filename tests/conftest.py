@@ -4,6 +4,7 @@
 
 import pytest
 import numpy as np
+from unittest import mock
 
 @pytest.fixture
 def mock_barcode() -> str:
@@ -24,8 +25,14 @@ def mock_ref() -> str:
     return mock_ref
 
 @pytest.fixture
-def mock_seq(mock_ref, mock_barcode) -> str:
-    mock_seq = mock_ref + mock_barcode + "GGTCTCGCTCCGTACCAAGACTTCGAATTC"
+def mock_stuffer() -> str:
+    mock_stuffer = "GGTCTCGCTCCGTACCAAGACTTCGAATTC"
+
+    return mock_stuffer
+
+@pytest.fixture
+def mock_seq(mock_ref, mock_barcode, mock_stuffer) -> str:
+    mock_seq = mock_ref + mock_barcode + mock_stuffer
 
     return mock_seq
 
@@ -37,11 +44,13 @@ def mock_base() -> np.array:
     return mock_base
 
 @pytest.fixture
-def mock_barcodes() -> np.array:
+def mock_barcodes(mock_ref, mock_stuffer) -> np.array:
     mock_barcodes = np.array([["AA","AC","CA","CC"],
                         ["AT","AG","CT","CG"],
                         ["TA","TC","GA","GC"],
                         ["TT","TG","GT","GG"]])
+
+    mock_barcodes = np.char.add(np.char.add(mock_ref, mock_barcodes), mock_stuffer)
 
     return mock_barcodes
 
@@ -53,6 +62,44 @@ def mock_matrix() -> np.ndarray:
                            [0,1,2,3]])
 
     return mock_matrix
+
+@pytest.fixture
+def mock_sequences(mock_barcodes, mock_matrix) -> list[str]:
+    mock_sequences = []
+    for i in range(4):
+        for j in range(4):
+            mock_sequences += [mock_barcodes[i,j]] * mock_matrix[i,j]
+
+    np.random.shuffle(mock_sequences)
+
+    return mock_sequences
+
+@pytest.fixture
+def mock_settings() -> dict:
+    mock_settings = {"ref": "AATTAAGAAGTCTACAGGAATGGTGAGACC",
+                    "k": 2,
+                    "g11": "A",
+                    "g12": "C",
+                    "g21": "T",
+                    "g22": "G"}
+
+    return mock_settings
+
+@pytest.fixture
+def mock_get_sequences_from_file(mock_sequences):
+    with mock.patch("src.process.get_sequences_from_file", return_value=mock_sequences) as mock_data:
+        yield mock_data
+
+@pytest.fixture
+def mock_get_settings_from_file(mock_settings):
+    with mock.patch("src.matrix.read_settings", return_value=mock_settings) as mock_config:
+        yield mock_config
+
+
+
+
+
+
 
 
 
