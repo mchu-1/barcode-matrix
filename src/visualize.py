@@ -4,18 +4,18 @@
 
 from matrix import *
 import seaborn as sns
-from scipy import stats
+from scipy import special
 from matplotlib import pyplot as plt
 
 def transform_matrix(A: np.array) -> np.array:
     """
     Apply a transformation element-wise to a matrix.
     """
-    A = [1/(1-np.log(x)/np.sum(A)) for x in A]
+    A = special.softmax(A)
 
     return A
 
-def visualize_matrix(A: np.array, transform: bool = False):
+def visualize_matrix(A: np.array, transform: bool = False, upper: float = 6.5*10**-5):
     """
     Visualize matrix.
     Return plot object.
@@ -24,8 +24,8 @@ def visualize_matrix(A: np.array, transform: bool = False):
     if transform:
         A = transform_matrix(A)
 
-    # Visualize matrix
-    G = sns.heatmap(A, cmap = "mako", xticklabels = False, yticklabels = False)
+    # Visualize matrix with fixed upper bound on colormap
+    G = sns.heatmap(A, cmap = "viridis", xticklabels = False, yticklabels = False, vmin = 0, vmax = upper)
 
     return G
 
