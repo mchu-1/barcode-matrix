@@ -5,7 +5,7 @@ description = "A graphical representation of fixed-length genetic barcodes."
 authors = ["mchu-1 <mchu1996@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "barcode_matrix"}]
+packages = [{include = "src", from = "."}]
 
 [tool.poetry.dependencies]
 python = "3.11"
@@ -13,6 +13,7 @@ numpy = "^1.25.1"
 seaborn = "^0.12.2"
 pyyaml = "^6.0.1"
 pytest = "^7.4.0"
+scipy = "^1.11.1"
 
 
 [build-system]

@@ -61,7 +61,9 @@ def read_settings(config_f: str):
     """
     Generate settings dictionary from config YAML.
     """
-    settings = yaml.safe_load(config_f)
+    with open(config_f, "r") as f:
+        print(f"Reading config file {f} ...")
+        settings = yaml.safe_load(f)
 
     return settings
 
@@ -89,6 +91,8 @@ def generate_matrix(input_f, config_f: str) -> np.array:
     A = initiate_matrix(k)
     b = define_base(g11, g12, g21, g22)
     for seq in sequences:
+        if ref not in seq:
+            continue
         barcode = get_barcode(seq, ref, k)
         x, y = get_indexes(barcode, b)
         A[x, y] += 1
