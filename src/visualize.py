@@ -36,13 +36,6 @@ def visualize_matrix(A: np.array, transform: bool = True):
 
     return G
 
-# Create 1000 x 1000 matrix with random integer entries
-# test_matrix = np.random.randint(0, 100, size = (1000, 1000))
-
-# Visualize and show matrix
-# G = visualize_matrix(test_matrix, transform=True)
-# plt.show()
-
 
 
 
