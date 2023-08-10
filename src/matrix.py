@@ -62,7 +62,7 @@ def read_settings(config_f: str):
     Generate settings dictionary from config YAML.
     """
     with open(config_f, "r") as f:
-        print(f"Reading config file {f} ...")
+        print(f"Reading config file {config_f} ...")
         settings = yaml.safe_load(f)
 
     return settings
